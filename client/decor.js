@@ -15,6 +15,8 @@
         }
       })
       .then((text) => {
+        const value = text.includes('0000') ? 'off' : 'on';
+        toggleSwitchDisplay(value)
         statusElement.textContent = text;
      });
   };
@@ -32,14 +34,16 @@
         statusElement.textContent = text;
      });
   }
-
+  const toggleSwitchDisplay = (value) => {
+    turnOnButton.className = value === 'on' ? 'hidden' : '';
+    turnOffButton.className = value === 'off' ? 'hidden' : '';
+  }
   const toggleElements = (value) => {
     turnOnButton.setAttribute('disabled', 'true');
     turnOffButton.setAttribute('disabled', 'true');
     toggleDecorLight(value)
       .then(() => {
-        turnOnButton.className = value === 'on' ? 'hidden' : '';
-        turnOffButton.className = value === 'off' ? 'hidden' : '';
+        toggleSwitchDisplay(value);
         turnOnButton.removeAttribute('disabled');
         turnOffButton.removeAttribute('disabled');
       })
