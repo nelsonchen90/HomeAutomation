@@ -36,7 +36,7 @@
   }
   const toggleSwitchDisplay = (value) => {
     turnOnButton.className = value === 'on' ? 'hidden' : '';
-    turnOffButton.className = value === 'off' ? 'hidden' : '';
+    turnOffButton.className = value === 'off' ? 'hidden' : 'on';
   }
   const toggleElements = (value) => {
     turnOnButton.setAttribute('disabled', 'true');
