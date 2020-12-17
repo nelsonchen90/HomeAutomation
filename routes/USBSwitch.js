@@ -4,7 +4,6 @@ import usbSwitch from '../utils/usbSwitch.js';
 const USBSwitchRouter = express.Router();
 
 USBSwitchRouter.get('/:value', (req, resp, next) => {
-  console.log('get usb switch');
   next();
 });
 
@@ -22,10 +21,10 @@ USBSwitchRouter.param('value', (req, resp, next, value) => {
   }
   usbSwitch(powerFlag, (stdout, stderr, error) => {
     if (error) {
-      resp.send(`Error: <br/> ${error}`);
+      resp.send(`Error: \n ${error}`);
       resp.statusCode = 500;
     } else {
-      resp.send(`Turned on USB: <br/> <pre>${stdout}</pre>`);
+      resp.send(`Turned ${value} USB: \n ${stdout}\n`);
       resp.statusCode = 200;
     }
   });

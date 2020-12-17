@@ -1,13 +1,31 @@
 import express from 'express';
+import path from 'path';
 import USBSwitchRouter from './USBSwitch.js';
 
 const mainRouter = express.Router();
 
 mainRouter.get('/', (req, resp) => {
-  resp.contentType('text/html');
-  resp.send('Home automation');
+  if (req.accepts('html')) {
+    resp.contentType('html');
+    resp.send('<h1>Home automation</h1>');
+  } else {
+    resp.contentType('text');
+    resp.send('Home automation')
+  }
 });
 
-mainRouter.use('/usbSwitch', USBSwitchRouter);
+const dir = path.join(path.resolve(), 'client');
+console.log(dir)
+
+mainRouter.use('/static', express.static(dir));
+
+mainRouter.use('/api/v1/usbSwitch', USBSwitchRouter);
+
+
+// should be the last route for fallback
+mainRouter.get('*', (req, res) => {
+  res.redirect('/');
+});
+
 
 export default mainRouter;
