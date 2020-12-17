@@ -6,10 +6,12 @@ import mainRoute from './routes/mainRoute.js';
 
 const app = express();
 const host = '0.0.0.0';
-const port = 3000;
+const isProd = process.env.NODE_ENV === 'production';
+const port = isProd ? 3002 : 3000;
 const appName = 'Home automation';
 
-app.use(helmet());
+
+// app.use(helmet());
 app.set('title', appName);
 app.use('/', mainRoute);
 

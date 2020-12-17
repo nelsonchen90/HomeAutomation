@@ -17,14 +17,14 @@ USBSwitchRouter.param('value', (req, resp, next, value) => {
       powerFlag = false;
       break;
     case 'status':
-      powerFlag = value;
+      powerFlag = 'status';
   }
   usbSwitch(powerFlag, (stdout, stderr, error) => {
     if (error) {
       resp.send(`Error: \n ${error}`);
       resp.statusCode = 500;
     } else {
-      resp.send(`Turned ${value} USB: \n ${stdout}\n`);
+      resp.send(`Turned ${powerFlag} USB: \n ${stdout}\n`);
       resp.statusCode = 200;
     }
   });
