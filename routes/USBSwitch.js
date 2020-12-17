@@ -9,7 +9,17 @@ USBSwitchRouter.get('/:value', (req, resp, next) => {
 });
 
 USBSwitchRouter.param('value', (req, resp, next, value) => {
-  const powerFlag = value === 'on' ? true : false;
+  let powerFlag;
+  switch (value) {
+    case 'on':
+      powerFlag = true;
+      break;
+    case 'off':
+      powerFlag = false;
+      break;
+    case 'status':
+      powerFlag = value;
+  }
   usbSwitch(powerFlag, (stdout, stderr, error) => {
     if (error) {
       resp.send(`Error: <br/> ${error}`);
