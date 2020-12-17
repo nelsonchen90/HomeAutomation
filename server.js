@@ -1,14 +1,12 @@
-const http = require('http');
+import express from'express';
+import mainRoute from './routes/mainRoute.js';
 
-const hostname = '0.0.0.0';
+const app = express();
+const host = '0.0.0.0';
 const port = 3000;
 
-const server = http.createServer((req, res) => {
-  res.statusCode = 200;
-  res.setHeader('Content-Type', 'text/plain');
-  res.end('Hello World');
-});
+app.use('/', mainRoute);
 
-server.listen(port, hostname, () => {
-  console.log(`Server running at http://${hostname}:${port}/`);
+app.listen(port, host, () => {
+  console.log(`Example app listening at http://${host}:${port}`)
 });
