@@ -1,7 +1,7 @@
 #!/home/pi/.nvm/versions/node/v15.4.0/bin/node
 
 import express from 'express'
-// import helmet from 'helmet';
+import helmet from 'helmet'
 import fs from 'fs'
 import https from 'https'
 import path from 'path'
@@ -13,7 +13,7 @@ const isProd = process.env.NODE_ENV === 'production'
 const httpsPort = isProd ? 443 : 3000
 const appName = 'Home automation'
 
-// app.use(helmet());
+app.use(helmet())
 app.set('title', appName)
 app.use('/', mainRoute)
 
