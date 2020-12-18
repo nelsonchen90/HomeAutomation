@@ -3,9 +3,9 @@ A Home automation sever running on [Raspberry Pi 3B](https://www.raspberrypi.org
 
 ## Documentation
   ### Installation/dev
-    - installation: `npm i`
-    - dev: `npm run dev`
-    - start server: `npm run start`
+  - installation: `npm i`
+  - dev: `npm run dev`
+  - start server: `npm run start`
 
   ### USB port power
    - preqeq: Install and setup (permission) uhubctl https://github.com/mvp/uhubctl
