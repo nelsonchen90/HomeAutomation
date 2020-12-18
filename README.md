@@ -16,7 +16,11 @@ A Home automation sever running on [Raspberry Pi 3B](https://www.raspberrypi.org
    - create service so can boot with OS https://stackoverflow.com/a/29042953
  
      #### REST API:
-       - status: GET `{hostname}:3000/usbSwitch/status`
-       - turn on/off: GET `{hostname}:3000/usbSwitch/on` / GET `{hostname}:3000/usbSwitch/off`
+       - status: GET `{hostname}/usbSwitch/status`
+       - turn on/off: GET `{hostname}/usbSwitch/on` / GET `{hostname}/usbSwitch/off`
      #### UI:
-       - http://{hostname}:3002/static
+       - http://{hostname}
+         - dev: https://localhost:3001
+         - in production mode, there will be 2 ports being listened. 80 for http redirect and 443 for https
+         - using [Certbot](https://certbot.eff.org/lets-encrypt/debianbuster-webproduct) to generate certificates, need to renew periodically
+         - check my running site here: [homeautomationbox.com](homeautomationbox.com)
