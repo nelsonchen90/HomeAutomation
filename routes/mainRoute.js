@@ -5,6 +5,9 @@ import USBSwitchRouter from './USBSwitch.js'
 const mainRouter = express.Router()
 
 mainRouter.get('/', (req, resp) => {
+  if (!req.secure && process.env.NODE_ENV === 'production') {
+    return resp.redirect('https://' + req.get('host') + req.url)
+  }
   if (req.accepts('html')) {
     resp.redirect('/static')
   } else {
