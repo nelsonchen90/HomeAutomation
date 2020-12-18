@@ -1,5 +1,5 @@
 # HomeAutomation
-A Home automation sever running on Raspberry Pi 3 B
+A Home automation sever running on [Raspberry Pi 3B](https://www.raspberrypi.org/products/raspberry-pi-3-model-b/) with Raspberry Pi OS Lite
 
 ## Documentation
 - installation: `npm i`
