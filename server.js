@@ -15,7 +15,16 @@ const port = 80
 const httpsPort = isProd ? 443 : 3001
 const appName = 'Home automation'
 
-app.use(helmet())
+app.use(helmet({
+  contentSecurityPolicy: false,
+  frameguard: false
+}))
+app.use(helmet.contentSecurityPolicy({
+  directives: {
+    ...helmet.contentSecurityPolicy.getDefaultDirectives(),
+    'frame-ancestors': ["'self'", 'https://homeautomationbox.com']
+  }
+}))
 app.set('title', appName)
 app.use('/', mainRoute)
 
@@ -29,8 +38,8 @@ if (isProd) {
 }
 
 const securedServer = https.createServer({
-  key: fs.readFileSync(path.join(path.resolve(), 'server.key')),
-  cert: fs.readFileSync(path.join(path.resolve(), 'server.cert'))
+  key: fs.readFileSync(path.join(path.resolve(), 'privkey.pem')),
+  cert: fs.readFileSync(path.join(path.resolve(), 'fullchain.pem'))
 }, app)
 securedServer.listen(httpsPort, host, () => {
   console.log(`${appName} listening at https://${host}:${httpsPort}`)
