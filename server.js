@@ -15,16 +15,7 @@ const port = 80
 const httpsPort = isProd ? 443 : 3001
 const appName = 'Home automation'
 
-app.use(helmet({
-  contentSecurityPolicy: false,
-  frameguard: false
-}))
-app.use(helmet.contentSecurityPolicy({
-  directives: {
-    ...helmet.contentSecurityPolicy.getDefaultDirectives(),
-    'frame-ancestors': ["'self'", 'https://homeautomationbox.com']
-  }
-}))
+app.use(helmet())
 app.set('title', appName)
 app.use('/', mainRoute)
 
