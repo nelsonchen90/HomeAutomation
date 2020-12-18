@@ -24,7 +24,7 @@ USBSwitchRouter.param('value', (req, resp, next, value) => {
       resp.send(`Error: \n ${error}`);
       resp.statusCode = 500;
     } else {
-      resp.send(`Turned ${powerFlag} USB: \n ${stdout}\n`);
+      resp.send(`USB ${powerFlag}: \n ${stdout}\n`);
       resp.statusCode = 200;
     }
   });
