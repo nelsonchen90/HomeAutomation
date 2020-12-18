@@ -2,6 +2,7 @@
 Description=Home automation
 
 [Service]
+AmbientCapabilities=CAP_NET_BIND_SERVICE
 ExecStart=/home/pi/node_server/HomeAutomation/server.js
 Restart=always
 User=pi
