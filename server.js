@@ -1,7 +1,7 @@
 #!/home/pi/.nvm/versions/node/v15.4.0/bin/node
 
 import express from 'express';
-import helmet from 'helmet';
+// import helmet from 'helmet';
 import mainRoute from './routes/mainRoute.js';
 
 const app = express();
