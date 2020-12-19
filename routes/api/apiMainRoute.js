@@ -5,6 +5,8 @@ const apiRouter = express.Router()
 
 apiRouter.use('/', express.json())
 apiRouter.use('/usbSwitch', USBSwitchRouter)
+
+// fallback error handling
 apiRouter.use('*', (req, res) => {
   console.log('Unknown api request')
   console.log(`[${req.method}] ${req.baseUrl}`)
