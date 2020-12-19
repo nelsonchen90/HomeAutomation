@@ -12,6 +12,7 @@ apiRouter.use('*', (req, res) => {
   console.log(`[${req.method}] ${req.baseUrl}`)
   console.log(`From ip: ${req.ip}`)
   res.statusCode = 404
+  res.contentType = 'text/plain'
   res.send('Unknown api endpoint, please check usage')
 })
 
