@@ -1,7 +1,13 @@
 import express from 'express'
-import usbSwitch from '../utils/usbSwitch.js'
+import usbSwitch from '../../utils/usbSwitch.js'
 
 const USBSwitchRouter = express.Router()
+
+USBSwitchRouter.post('*', (req, res) => {
+  console.log('received a post request')
+  console.log(`req body: \n ${JSON.stringify(req.body)}`)
+  res.json(req.body)
+})
 
 USBSwitchRouter.get('/:value', (req, resp, next) => {
   next()
@@ -17,6 +23,7 @@ USBSwitchRouter.param('value', (req, resp, next, value) => {
       powerFlag = false
       break
     case 'status':
+    default:
       powerFlag = 'status'
   }
   usbSwitch(powerFlag, (stdout, stderr, error) => {

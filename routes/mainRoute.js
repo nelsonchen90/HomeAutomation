@@ -1,6 +1,6 @@
 import express from 'express'
 import path from 'path'
-import USBSwitchRouter from './USBSwitch.js'
+import apiRouter from './api/apiMainRoute.js'
 
 const mainRouter = express.Router()
 
@@ -21,7 +21,7 @@ console.log(dir)
 
 mainRouter.use('/static', express.static(dir))
 
-mainRouter.use('/api/v1/usbSwitch', USBSwitchRouter)
+mainRouter.use('/api/v1', apiRouter)
 
 // should be the last route for fallback
 mainRouter.get('*', (req, res) => {
