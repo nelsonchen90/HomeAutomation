@@ -1,5 +1,6 @@
 import Alexa from 'ask-sdk-core'
 import { ExpressAdapter } from 'ask-sdk-express-adapter'
+import { getSharedIO } from '../../../utils/socketIO.js'
 import { usbSwitchPromise } from '../../../utils/usbSwitch.js'
 
 const LaunchRequestHandler = {
@@ -28,6 +29,10 @@ const ToggleDecorLightIntentHandler = {
     let speechText
     if (stdout) {
       speechText = `The decor light turned ${targetValue}`
+      const io = getSharedIO()
+      if (io) {
+        io.emit('component/usbSwitch', stdout)
+      }
     } else {
       throw Alexa.createAskSdkError('Switch', `There is an error occurred while turinging ${targetValue} the decor light`)
     }
