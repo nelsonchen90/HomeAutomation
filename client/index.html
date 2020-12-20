@@ -2,6 +2,8 @@
 <html>
   <head>
     <title>Casa de Nelson</title>
+    <link rel="stylesheet" href="./index.css">
+    <link rel="stylesheet" href="./laptop.css">
     <link rel="stylesheet" href="./decor.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="manifest" href="./favicon/site.webmanifest">
@@ -13,15 +15,19 @@
 
   <body>
     <h1>Casa de Nelson</h1>
-    <div>
-      <h3>Decor light</h3>
-      <button id="decor_on" class="hidden">turn on</button>
-      <button id="decor_off" class="hidden">turn off</button>
+    <div class="flex">
       <div>
-        <pre id="decor_status"></pre>
+        <h3>Decor light</h3>
+        <button id="decor_on" class="hidden">turn on</button>
+        <button id="decor_off" class="hidden">turn off</button>
+      </div>
+      <div>
+        <h3>Laptop</h3>
+        <button id="laptop_trigger" class="trigger">turn on</button>
       </div>
     </div>
     <script src="/socket.io/socket.io.js"></script>
     <script src="./decor.js"></script>
+    <script src="./laptop.js"></script>
   </body>
 </html>
