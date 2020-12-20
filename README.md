@@ -24,3 +24,6 @@ A Home automation sever running on [Raspberry Pi 3B](https://www.raspberrypi.org
          - in production mode, there will be 2 ports being listened. 80 for http redirect and 443 for https
          - using [Certbot](https://certbot.eff.org/lets-encrypt/debianbuster-webproduct) to generate certificates, need to renew periodically
          - check my running site here: [homeautomationbox.com](homeautomationbox.com)
+     #### Alexa:
+      - Deployed as a privite skill on Alexa under name: Decor light. access skill [here](https://developer.amazon.com/alexa/console/ask/build/custom/amzn1.ask.skill.43954e4b-5ee6-4604-9816-3658163d2b99/development/en_US/dashboard)
+      
