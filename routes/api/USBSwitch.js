@@ -1,46 +1,31 @@
 import express from 'express'
-import usbSwitch from '../../utils/usbSwitch.js'
+import usbSwitch, { getPowerFlag } from '../../utils/usbSwitch.js'
+import { adapter as usbSwitchSkillAdaptor } from '../../alexa/skills/usbSwitch/usbSwitchSkill.js'
 
 const USBSwitchRouter = express.Router()
 
-USBSwitchRouter.post('/alexa', (req, res) => {
-  console.log(`req body: \n ${JSON.stringify(req.body)}`)
-  res.json(req.body)
-})
+USBSwitchRouter.post('/alexa', usbSwitchSkillAdaptor.getRequestHandlers())
 
 USBSwitchRouter.get('/:value', (req, resp, next) => {
   next()
 })
 
 USBSwitchRouter.param('value', (req, resp, next, value) => {
-  setUsbSwitch(value, (stdout, stderr, error, powerFlag) => {
-    if (error) {
-      resp.send(`Error: \n ${error}`)
-      resp.statusCode = 500
-    } else {
-      resp.send(`USB ${powerFlag}: \n ${stdout}\n`)
-      resp.statusCode = 200
-    }
-  })
-  next()
+  const canHandle = getPowerFlag(value) !== undefined
+  if (!canHandle) {
+    resp.statusCode = 400
+    resp.send('Bad request. Please provide one of the following values: \'on\', \'off\' or \'status\'')
+  } else {
+    usbSwitch(value, (stdout, stderr, error, powerFlag) => {
+      if (error) {
+        resp.send(`Error: \n ${error}`)
+        resp.statusCode = 500
+      } else {
+        resp.send(`USB ${powerFlag}: \n ${stdout}\n`)
+        resp.statusCode = 200
+      }
+    })
+  }
 })
-
-const setUsbSwitch = (value, cb) => {
-  let powerFlag
-  switch (value) {
-    case 'on':
-      powerFlag = true
-      break
-    case 'off':
-      powerFlag = false
-      break
-    case 'status':
-      powerFlag = 'status'
-      break
-  }
-  if (powerFlag) {
-    usbSwitch(powerFlag, (stdout, stderr, error) => cb(stdout, stderr, error, powerFlag))
-  }
-}
 
 export default USBSwitchRouter
