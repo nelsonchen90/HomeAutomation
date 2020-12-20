@@ -4,12 +4,12 @@ import apiRouter from './api/apiMainRoute.js'
 
 const mainRouter = express.Router()
 
-mainRouter.get('/', (req, resp) => {
+mainRouter.get('/', (req, resp, next) => {
   if (!req.secure && process.env.NODE_ENV === 'production') {
     return resp.redirect('https://' + req.get('host') + req.url)
   }
   if (req.accepts('html')) {
-    resp.redirect('/static')
+    next()
   } else {
     resp.contentType('text')
     resp.send('Home automation')
@@ -19,7 +19,7 @@ mainRouter.get('/', (req, resp) => {
 const dir = path.join(path.resolve(), 'client')
 console.log(dir)
 
-mainRouter.use('/static', express.static(dir))
+mainRouter.use('/', express.static(dir))
 
 mainRouter.use('/api/v1', apiRouter)
 
