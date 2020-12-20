@@ -3,7 +3,6 @@
   const socket = io()
   const apiPrefix = '/api/v1/usbSwitch'
 
-  const statusElement = document.querySelector('#decor_status')
   const turnOnButton = document.querySelector('#decor_on')
   const turnOffButton = document.querySelector('#decor_off')
   const getStatus = () => {
@@ -28,7 +27,6 @@
     }
     const value = nextStatusText.includes('0000') ? 'off' : 'on'
     toggleSwitchDisplay(value)
-    statusElement.textContent = text
   }
 
   const toggleDecorLight = (value) => {
@@ -39,9 +37,6 @@
         } else {
           return Promise.reject(response)
         }
-      })
-      .then((text) => {
-        statusElement.textContent = text
       })
   }
   const toggleSwitchDisplay = (value) => {
