@@ -6,8 +6,7 @@
   const turnOnButton = document.querySelector('#laptop_trigger')
 
   turnOnButton.addEventListener('click', () => {
-    console.log('click')
-    return fetch(`${apiPrefix}/toggle`, {
+    fetch(`${apiPrefix}/toggle`, {
       method: 'POST'
     })
       .then((response) => {
