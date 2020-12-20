@@ -10,7 +10,7 @@ apiRouter.use('/usbSwitch', USBSwitchRouter)
 apiRouter.use('/windowsSwitch', windowsSwitch)
 
 // fallback error handling
-apiRouter.use('*', (req, res) => {
+apiRouter.all('*', (req, res) => {
   console.log('Unknown api request')
   console.log(`[${req.method}] ${req.baseUrl}`)
   console.log(`From ip: ${req.ip}`)
