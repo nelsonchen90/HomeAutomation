@@ -1,66 +1,79 @@
+/* global io */
 (() => {
-  const api_prefix = '/api/v1/usbSwitch';
+  const socket = io()
+  const apiPrefix = '/api/v1/usbSwitch'
 
-  const statusElement = document.querySelector("#decor_status");
-  const turnOnButton = document.querySelector("#decor_on");
-  const turnOffButton = document.querySelector("#decor_off");
-  
+  const statusElement = document.querySelector('#decor_status')
+  const turnOnButton = document.querySelector('#decor_on')
+  const turnOffButton = document.querySelector('#decor_off')
   const getStatus = () => {
-    fetch(`${api_prefix}/status`)
+    fetch(`${apiPrefix}/status`)
       .then((response) => {
         if (response.ok) {
-          return response.text();
+          return response.text()
         } else {
-          return Promise.reject(response);
+          return Promise.reject(response)
         }
       })
       .then((text) => {
-        const value = text.includes('0000') ? 'off' : 'on';
-        toggleSwitchDisplay(value)
-        statusElement.textContent = text;
-     });
-  };
+        handleToggleResponse(text)
+      })
+  }
+
+  const handleToggleResponse = (text) => {
+    const statusSplit = text.split('New status')
+    let nextStatusText = text
+    if (statusSplit.length > 1) {
+      nextStatusText = statusSplit[1]
+    }
+    const value = nextStatusText.includes('0000') ? 'off' : 'on'
+    toggleSwitchDisplay(value)
+    statusElement.textContent = text
+  }
 
   const toggleDecorLight = (value) => {
-    return fetch(`${api_prefix}/${value}`)
+    return fetch(`${apiPrefix}/${value}`)
       .then((response) => {
         if (response.ok) {
-          return response.text();
+          return response.text()
         } else {
-          return Promise.reject(response);
+          return Promise.reject(response)
         }
       })
       .then((text) => {
-        statusElement.textContent = text;
-     });
+        statusElement.textContent = text
+      })
   }
   const toggleSwitchDisplay = (value) => {
-    turnOnButton.className = value === 'on' ? 'hidden' : '';
-    turnOffButton.className = value === 'off' ? 'hidden' : 'on';
+    turnOnButton.className = value === 'on' ? 'hidden' : ''
+    turnOffButton.className = value === 'off' ? 'hidden' : 'on'
   }
   const toggleElements = (value) => {
-    turnOnButton.setAttribute('disabled', 'true');
-    turnOffButton.setAttribute('disabled', 'true');
+    turnOnButton.setAttribute('disabled', 'true')
+    turnOffButton.setAttribute('disabled', 'true')
     toggleDecorLight(value)
       .then(() => {
-        toggleSwitchDisplay(value);
-        turnOnButton.removeAttribute('disabled');
-        turnOffButton.removeAttribute('disabled');
+        toggleSwitchDisplay(value)
+        turnOnButton.removeAttribute('disabled')
+        turnOffButton.removeAttribute('disabled')
       })
       .catch(() => {
-        turnOnButton.setAttribute('disabled', 'true');
-        turnOffButton.setAttribute('disabled', 'true');
-      });
+        turnOnButton.setAttribute('disabled', 'true')
+        turnOffButton.setAttribute('disabled', 'true')
+      })
   }
 
-  getStatus();
+  getStatus()
 
   turnOnButton.addEventListener('click', () => {
-    toggleElements('on');
-  });
+    toggleElements('on')
+  })
 
   turnOffButton.addEventListener('click', () => {
-    toggleElements('off');
-  });
+    toggleElements('off')
+  })
 
+  socket.on('component/usbSwitch', (msg) => {
+    handleToggleResponse(msg)
+  })
 })()

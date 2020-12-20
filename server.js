@@ -6,7 +6,9 @@ import fs from 'fs'
 import https from 'https'
 import http from 'http'
 import path from 'path'
+import { Server } from 'socket.io'
 import mainRoute from './routes/mainRoute.js'
+import { setupSharedIO } from './utils/socketIO.js'
 
 const app = express()
 const host = '0.0.0.0'
@@ -20,6 +22,7 @@ app.set('title', appName)
 app.use('/', mainRoute)
 
 let securedServer
+let io
 if (isProd) {
   const securedServer = https.createServer({
     key: fs.readFileSync(path.join(path.resolve(), 'privkey.pem')),
@@ -29,6 +32,7 @@ if (isProd) {
     console.log(`${appName} listening at https://${host}:${httpsPort}`)
     console.log('pid is ' + process.pid)
   })
+  io = new Server(securedServer)
 }
 
 const exposedServer = http.createServer(app)
@@ -36,6 +40,19 @@ exposedServer.listen(port, host, () => {
   console.log(`${appName} listening at http://${host}:${port}`)
   console.log('pid is ' + process.pid)
 })
+if (!isProd) {
+  io = new Server(exposedServer)
+}
+
+io.on('connection', (socket) => {
+  console.log('a user connected')
+  io.emit('socket message', 'this is socket msg')
+  socket.on('disconnect', () => {
+    console.log('user disconnected')
+  })
+})
+
+setupSharedIO(io)
 
 const handleExit = (signal) => {
   console.log(`Received ${signal}. Close my server properly.`)

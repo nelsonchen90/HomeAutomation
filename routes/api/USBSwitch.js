@@ -1,6 +1,7 @@
 import express from 'express'
 import usbSwitch, { getPowerFlag } from '../../utils/usbSwitch.js'
 import { adapter as usbSwitchSkillAdaptor } from '../../alexa/skills/usbSwitch/usbSwitchSkill.js'
+import { getSharedIO } from '../../utils/socketIO.js'
 
 const USBSwitchRouter = express.Router()
 
@@ -23,6 +24,8 @@ USBSwitchRouter.param('value', (req, resp, next, value) => {
       } else {
         resp.send(`USB ${powerFlag}: \n ${stdout}\n`)
         resp.statusCode = 200
+        const io = getSharedIO()
+        io.emit('component/usbSwitch', stdout)
       }
     })
   }
