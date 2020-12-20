@@ -3,7 +3,7 @@ import USBSwitchRouter from './USBSwitch.js'
 
 const apiRouter = express.Router()
 
-apiRouter.use('/', express.json())
+// apiRouter.use('/', express.json())
 apiRouter.use('/usbSwitch', USBSwitchRouter)
 
 // fallback error handling
