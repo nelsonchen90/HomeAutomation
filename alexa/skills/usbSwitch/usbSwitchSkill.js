@@ -1,5 +1,6 @@
 import Alexa from 'ask-sdk-core'
 import { ExpressAdapter } from 'ask-sdk-express-adapter'
+import axios from 'axios'
 import { getSharedIO } from '../../../utils/socketIO.js'
 import { usbSwitchPromise } from '../../../utils/usbSwitch.js'
 
@@ -37,6 +38,25 @@ const ToggleDecorLightIntentHandler = {
       throw Alexa.createAskSdkError('Switch', `There is an error occurred while turinging ${targetValue} the decor light`)
     }
 
+    return handlerInput.responseBuilder
+      .speak(speechText)
+      .getResponse()
+  }
+}
+
+const turnOnLaptop = () => {
+  return axios.post('https://homeautomationbox.com/api/v1/windowsSwitch/toggle')
+    .then((response) => response.data.message)
+    .catch((error) => error.response.data.errorMessage)
+}
+
+const TurnOnLaptopIntentHandler = {
+  canHandle (handlerInput) {
+    return handlerInput.requestEnvelope.request.type === 'IntentRequest' &&
+    Alexa.getIntentName(handlerInput.requestEnvelope) === 'TurnOnLaptopIntent'
+  },
+  async handle (handlerInput) {
+    const speechText = await turnOnLaptop()
     return handlerInput.responseBuilder
       .speak(speechText)
       .getResponse()
@@ -104,6 +124,7 @@ const skillBuilder = Alexa.SkillBuilders.custom()
     LaunchRequestHandler,
     HelpIntentHandler,
     ToggleDecorLightIntentHandler,
+    TurnOnLaptopIntentHandler,
     CancelAndStopIntentHandler,
     SessionEndedRequestHandler
   )
