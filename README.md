@@ -1,6 +1,24 @@
 # HomeAutomation
 A Home automation sever running on [Raspberry Pi 3B](https://www.raspberrypi.org/products/raspberry-pi-3-model-b/) with Raspberry Pi OS Lite
 
+## Interaction
+### UI:
+  - http://{hostname}
+    - in production mode, there will be 2 ports being listened. 80 for http redirect and 443 for https
+    - using [Certbot](https://certbot.eff.org/lets-encrypt/debianbuster-webproduct) to generate certificates, need to renew periodically
+    - check my running site here: [homeautomationbox.com](homeautomationbox.com)
+### Alexa:
+- [What is Alexa?](https://developer.amazon.com/en-US/alexa)
+- Deployed as a privite skill on Alexa under name: Decor light. Access skill [here](https://developer.amazon.com/alexa/console/ask/build/custom/amzn1.ask.skill.43954e4b-5ee6-4604-9816-3658163d2b99/development/en_US/dashboard)
+  - utterances:
+    - turn on/off decor light
+    - decor light on/off
+    - decor light switch
+    - help
+    - what is this
+    - what does this do
+    - ...
+
 ## Documentation
   ### Installation/dev
   - installation: `npm i`
@@ -31,21 +49,3 @@ A Home automation sever running on [Raspberry Pi 3B](https://www.raspberrypi.org
         "targetMacAddress": "1A:2B:3C:4D:5E:6F"
       }
       ```
-
-## Interaction
-### UI:
-  - http://{hostname}
-    - in production mode, there will be 2 ports being listened. 80 for http redirect and 443 for https
-    - using [Certbot](https://certbot.eff.org/lets-encrypt/debianbuster-webproduct) to generate certificates, need to renew periodically
-    - check my running site here: [homeautomationbox.com](homeautomationbox.com)
-### Alexa:
-- [What is Alexa?](https://developer.amazon.com/en-US/alexa)
-- Deployed as a privite skill on Alexa under name: Decor light. Access skill [here](https://developer.amazon.com/alexa/console/ask/build/custom/amzn1.ask.skill.43954e4b-5ee6-4604-9816-3658163d2b99/development/en_US/dashboard)
-  - utterances:
-    - turn on/off decor light
-    - decor light on/off
-    - decor light switch
-    - help
-    - what is this
-    - what does this do
-    - ...
