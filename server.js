@@ -9,6 +9,7 @@ import path from 'path'
 import { Server } from 'socket.io'
 import mainRoute from './routes/mainRoute.js'
 import { setupSharedIO } from './utils/socketIO.js'
+import { setupDynamoDB } from './db/config/index.js'
 
 const app = express()
 const host = '0.0.0.0'
@@ -16,6 +17,8 @@ const isProd = process.env.NODE_ENV === 'production'
 const port = isProd ? 80 : 3000
 const httpsPort = isProd ? 443 : 3001
 const appName = 'Home automation'
+
+setupDynamoDB()
 
 app.use(helmet())
 app.set('title', appName)
