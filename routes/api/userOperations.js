@@ -1,5 +1,7 @@
 import express from 'express'
+
 import { createUser, getUserByUsername } from '../../db/UserTable/index.js'
+import { hashPassword, validatePassword } from '../../utils/paswordHashing.js'
 
 const userOperationRoute = express.Router()
 userOperationRoute.use(express.json())
@@ -20,11 +22,11 @@ const requireCredentialFieldsMiddleware = (req, res, next) => {
 userOperationRoute.use('/signup', requireCredentialFieldsMiddleware)
 userOperationRoute.post('/signup', async (req, res) => {
   const { username, password } = req.body
-  const encrpytedPassword = encrytPassword(password)
   let response
   let statusCode
   try {
-    await createUser(username, encrpytedPassword)
+    const hashedPasswordssword = await hashPassword(password)
+    await createUser(username, hashedPasswordssword)
     response = {
       status: 'execution/success',
       message: 'Successfully signed up'
@@ -46,10 +48,6 @@ userOperationRoute.post('/signup', async (req, res) => {
   }
 })
 
-const encrytPassword = (plainText) => {
-  return plainText
-}
-
 // delete user
 userOperationRoute.delete('/', (req, res) => {
 
@@ -64,11 +62,24 @@ authRouter.post('/', async (req, res) => {
   let response
   let statusCode
   try {
-    response = await getUserByUsername(username)
-    statusCode = 200
+    const user = await getUserByUsername(username)
+    const isValid = user !== undefined && await validatePassword(password, user.password)
+    statusCode = isValid ? 200 : 401
+    if (isValid) {
+      response = {
+        status: 'login/success',
+        message: 'Successfully login in'
+      }
+    } else {
+      response = {
+        errorCode: 'login/failure',
+        errorMessage: 'Login failed. Credential doesn\'t match'
+      }
+    }
   } catch (e) {
     statusCode = 500
     response = e
+    console.log(e)
   } finally {
     res.status(statusCode).json(response)
   }

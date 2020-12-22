@@ -2,7 +2,6 @@ import AWS from 'aws-sdk'
 import path from 'path'
 import { fileURLToPath } from 'url'
 import { initDB } from '../UserTable/UsersCreateTable.js'
-import { loadDevData } from '../UserTable/UsersLoadData.js'
 
 let dynamoDBClient
 let dynamoDB
@@ -17,7 +16,12 @@ export const setupDynamoDB = async () => {
   dynamoDB = new AWS.DynamoDB()
   dynamoDBClient = new AWS.DynamoDB.DocumentClient()
   if (!isProd || shouldInitDB) {
-    initDB(dynamoDB, dynamoDBClient)
+    try {
+      await initDB(dynamoDB, dynamoDBClient)
+    } catch (e) {
+      console.log(e.message)
+    }
+    console.log('done init db')
   }
 }
 
