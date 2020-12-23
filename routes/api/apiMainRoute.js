@@ -1,11 +1,9 @@
 import express from 'express'
 import USBSwitchRouter from './USBSwitch.js'
-import { userOperationRoute, authRouter } from './userOperations.js'
+import { userOperationRoute } from './userOperations.js'
 import windowsSwitch from './windowsSwitch.js'
 
 const apiRouter = express.Router()
-
-apiRouter.use('/auth', authRouter)
 
 // apiRouter.use('/', express.json())
 apiRouter.use('/usbSwitch', USBSwitchRouter)

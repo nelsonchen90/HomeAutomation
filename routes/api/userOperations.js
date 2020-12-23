@@ -1,5 +1,5 @@
 import express from 'express'
-
+import jwt from 'jsonwebtoken'
 import { createUser, getUserByUsername } from '../../db/UserTable/index.js'
 import { hashPassword, validatePassword } from '../../utils/paswordHashing.js'
 
@@ -18,9 +18,54 @@ const requireCredentialFieldsMiddleware = (req, res, next) => {
   next()
 }
 
+// delete user
+userOperationRoute.delete('/', (req, res) => {
+
+})
+
+// update user
+userOperationRoute.patch('/', (req, res) => {
+
+})
+
+// AUTH
+const authRouter = express.Router()
+authRouter.use(express.json())
+authRouter.use('/login', requireCredentialFieldsMiddleware)
+authRouter.post('/login', async (req, res) => {
+  const { username, password } = req.body
+  let response
+  let statusCode
+  try {
+    const user = await getUserByUsername(username)
+    const isValid = user !== undefined && await validatePassword(password, user.password)
+    statusCode = isValid ? 200 : 401
+    if (isValid) {
+      delete user.password
+      const token = jwt.sign(user, 'secret')
+      response = {
+        status: 'login/success',
+        message: 'Successfully login in',
+        authToken: token
+      }
+    } else {
+      response = {
+        errorCode: 'login/failure',
+        errorMessage: 'Login failed. Credential doesn\'t match'
+      }
+    }
+  } catch (e) {
+    statusCode = 500
+    response = e
+    console.log(e)
+  } finally {
+    res.status(statusCode).json(response)
+  }
+})
+
 // create user
-userOperationRoute.use('/signup', requireCredentialFieldsMiddleware)
-userOperationRoute.post('/signup', async (req, res) => {
+authRouter.use('/signup', requireCredentialFieldsMiddleware)
+authRouter.post('/signup', async (req, res) => {
   const { username, password } = req.body
   let response
   let statusCode
@@ -48,41 +93,8 @@ userOperationRoute.post('/signup', async (req, res) => {
   }
 })
 
-// delete user
-userOperationRoute.delete('/', (req, res) => {
-
-})
-
-// AUTH
-const authRouter = express.Router()
-authRouter.use(express.json())
-authRouter.use('/', requireCredentialFieldsMiddleware)
-authRouter.post('/', async (req, res) => {
-  const { username, password } = req.body
-  let response
-  let statusCode
-  try {
-    const user = await getUserByUsername(username)
-    const isValid = user !== undefined && await validatePassword(password, user.password)
-    statusCode = isValid ? 200 : 401
-    if (isValid) {
-      response = {
-        status: 'login/success',
-        message: 'Successfully login in'
-      }
-    } else {
-      response = {
-        errorCode: 'login/failure',
-        errorMessage: 'Login failed. Credential doesn\'t match'
-      }
-    }
-  } catch (e) {
-    statusCode = 500
-    response = e
-    console.log(e)
-  } finally {
-    res.status(statusCode).json(response)
-  }
+authRouter.all('*', (req, res) => {
+  return res.sendStatus(404)
 })
 
 export {

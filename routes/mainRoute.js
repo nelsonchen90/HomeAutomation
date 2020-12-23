@@ -1,6 +1,8 @@
 import express from 'express'
 import path from 'path'
+import jwtMid from 'express-jwt'
 import apiRouter from './api/apiMainRoute.js'
+import { authRouter } from './api/userOperations.js'
 
 const mainRouter = express.Router()
 
@@ -16,16 +18,34 @@ mainRouter.get('/', (req, resp, next) => {
   }
 })
 
+const authMiddlware = jwtMid({
+  secret: 'secret',
+  algorithms: ['HS256'],
+  credentialsRequired: false,
+  getToken: (req) => {
+    if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
+      return req.headers.authorization.split(' ')[1]
+    }
+    return null
+  }
+})
+
+const publicDir = path.join(path.resolve(), 'public')
+mainRouter.use('/signin', express.static(publicDir))
+mainRouter.use('/auth', authRouter)
+
+mainRouter.use('/home', authMiddlware, (req, res, next) => {
+  if (!(req.user && req.user.username)) return res.redirect('/signin')
+  return next()
+})
 const dir = path.join(path.resolve(), 'client')
-console.log(dir)
+mainRouter.use('/home', express.static(dir))
 
-mainRouter.use('/', express.static(dir))
-
-mainRouter.use('/api/v1', apiRouter)
+mainRouter.use('/api/v1', authMiddlware, apiRouter)
 
 // should be the last route for fallback
 mainRouter.get('*', (req, res) => {
-  res.redirect('/')
+  res.redirect('/home')
 })
 
 export default mainRouter
