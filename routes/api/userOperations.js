@@ -36,13 +36,14 @@ authRouter.post('/login', async (req, res) => {
   const { username, password } = req.body
   let response
   let statusCode
+  let token
   try {
     const user = await getUserByUsername(username)
     const isValid = user !== undefined && await validatePassword(password, user.password)
     statusCode = isValid ? 200 : 401
     if (isValid) {
       delete user.password
-      const token = jwt.sign(user, 'secret')
+      token = jwt.sign(user, 'secret')
       response = {
         status: 'login/success',
         message: 'Successfully login in',
@@ -59,6 +60,9 @@ authRouter.post('/login', async (req, res) => {
     response = e
     console.log(e)
   } finally {
+    if (statusCode === 200) {
+      res.cookie('access_token', `Bearer ${token}`)
+    }
     res.status(statusCode).json(response)
   }
 })

@@ -23,8 +23,10 @@ const authMiddlware = jwtMid({
   algorithms: ['HS256'],
   credentialsRequired: false,
   getToken: (req) => {
-    if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
-      return req.headers.authorization.split(' ')[1]
+    const tokenString = (req.headers && req.headers.authorization) ||
+      (req.cookies && req.cookies.access_token)
+    if (tokenString && tokenString.split(' ')[0] === 'Bearer') {
+      return tokenString.split(' ')[1]
     }
     return null
   }
@@ -33,15 +35,38 @@ const authMiddlware = jwtMid({
 const publicDir = path.join(path.resolve(), 'public')
 mainRouter.use('/signin', express.static(publicDir))
 mainRouter.use('/auth', authRouter)
+mainRouter.get('/logout', (req, res) => {
+  res.clearCookie('access_token')
+  res.redirect('/')
+})
 
-mainRouter.use('/home', authMiddlware, (req, res, next) => {
+mainRouter.use('/home', authMiddlware)
+mainRouter.use('/home', (err, req, res, next) => {
+  if (err.name === 'UnauthorizedError') {
+    res.status(403).redirect('/logout')
+  } else {
+    next()
+  }
+})
+mainRouter.use('/home', (req, res, next) => {
   if (!(req.user && req.user.username)) return res.redirect('/signin')
   return next()
 })
 const dir = path.join(path.resolve(), 'client')
 mainRouter.use('/home', express.static(dir))
 
-mainRouter.use('/api/v1', authMiddlware, apiRouter)
+mainRouter.use('/api/v1', authMiddlware)
+mainRouter.use('/api/v1', (err, req, res, next) => {
+  if (err.name === 'UnauthorizedError') {
+    res.status(403).json({
+      errorCode: 'authentication/invalid_token',
+      errorMessage: err.message
+    })
+  } else {
+    next()
+  }
+})
+mainRouter.use('/api/v1', apiRouter)
 
 // should be the last route for fallback
 mainRouter.get('*', (req, res) => {

@@ -7,6 +7,7 @@ import https from 'https'
 import http from 'http'
 import path from 'path'
 import { Server } from 'socket.io'
+import cookieParser from 'cookie-parser'
 import mainRoute from './routes/mainRoute.js'
 import { setupSharedIO } from './utils/socketIO.js'
 import { setupDynamoDB } from './db/config/index.js'
@@ -21,6 +22,7 @@ const appName = 'Home automation'
 setupDynamoDB()
 
 app.use(helmet())
+app.use(cookieParser())
 app.set('title', appName)
 app.use('/', mainRoute)
 
