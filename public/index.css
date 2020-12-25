@@ -1,0 +1,20 @@
+.login {
+  
+}
+
+.login_form {
+  display: table;
+}
+
+.field {
+  display: table-row;
+  margin: 1rem 0;
+}
+
+.field > label {
+  display: table-cell;
+}
+
+.login_form > .action {
+  margin-top: 1rem;
+}

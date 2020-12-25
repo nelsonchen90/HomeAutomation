@@ -2,18 +2,28 @@
 <html>
   <head>
     <title>Casa de Nelson</title>
+    <link rel="stylesheet" href="./index.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
   </head>
 
   <body>
     <h1>Casa de Nelson</h1>
     <h3>Sign in</h3>
-    <form id="login_form">
-      <label for="login_username">User name</label>
-      <input type="text" id="login_username" name="username" required />
-      <label for="login_password">Password</label>
-      <input type="password" id="login_password" name="password" required />
-      <button id="login_submit" type="submit">Login</button>
-    </form>
+    <div class="login">
+      <form id="login_form" class="login_form">
+        <div class="field">
+          <label for="login_username">User name</label>
+          <input type="text" id="login_username" name="username" required />
+        </div>
+        <div class="field">
+          <label for="login_password">Password</label>
+          <input type="password" id="login_password" name="password" required />
+        </div>
+        <div class="action">
+          <button id="login_submit" type="submit">Login</button>
+        </div>
+      </form>
+    </div>
     <script src="signin.js"></script>
   </body>
 </html>
