@@ -32,7 +32,7 @@ A Home automation sever running on [Raspberry Pi 3B](https://www.raspberrypi.org
   - start server: `npm run start`
   - DB: AWS DynamoDB (us-east-1)
   - create service so can boot with OS https://stackoverflow.com/a/29042953 (Will change once containerized)
-    - sample service file under `.utils/homeAutomation.service` 
+    - sample service file under `.utils/homeAutomation.service`. Please read thru it for it has token/secret needs to be generated
   ### USB port power
   - preqeq: Install and setup (permission) uhubctl https://github.com/mvp/uhubctl
   - symlink the uhubctl to `/usr/local/bin` so the child_process can access
