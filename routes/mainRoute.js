@@ -3,6 +3,7 @@ import path from 'path'
 import jwtMid from 'express-jwt'
 import apiRouter from './api/apiMainRoute.js'
 import { authRouter } from './api/userOperations.js'
+import { adapter as usbSwitchSkillAdaptor } from '../alexa/skills/usbSwitch/usbSwitchSkill.js'
 
 const mainRouter = express.Router()
 
@@ -67,6 +68,8 @@ mainRouter.use('/api/v1', (err, req, res, next) => {
   }
 })
 mainRouter.use('/api/v1', apiRouter)
+
+mainRouter.use('/alexa', usbSwitchSkillAdaptor.getRequestHandlers())
 
 // should be the last route for fallback
 mainRouter.get('*', (req, res) => {
