@@ -20,7 +20,7 @@ mainRouter.get('/', (req, resp, next) => {
 })
 
 const authMiddlware = jwtMid({
-  secret: 'secret',
+  secret: process.env.TOKEN_SECRET,
   algorithms: ['HS256'],
   credentialsRequired: false,
   getToken: (req) => {

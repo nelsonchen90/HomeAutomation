@@ -43,7 +43,7 @@ authRouter.post('/login', async (req, res) => {
     statusCode = isValid ? 200 : 401
     if (isValid) {
       delete user.password
-      token = jwt.sign(user, 'secret')
+      token = jwt.sign(user, process.env.TOKEN_SECRET)
       response = {
         status: 'login/success',
         message: 'Successfully login in',
