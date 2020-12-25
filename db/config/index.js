@@ -9,10 +9,12 @@ let dynamoDB
 export const setupDynamoDB = async () => {
   const isProd = process.env.NODE_ENV === 'production'
   const shouldInitDB = process.env.INIT_DB === 'true'
-  const configFileName = isProd ? 'prod.json' : 'dev.json'
-  const filePath = path.join(fileURLToPath(import.meta.url), `../${configFileName}`)
-  console.log(filePath)
-  AWS.config.loadFromPath(filePath)
+  if (!isProd) {
+    const filePath = path.join(fileURLToPath(import.meta.url), '../dev.json')
+    AWS.config.loadFromPath(filePath)
+  } else {
+    AWS.config.update({ region: 'us-east-1' })
+  }
   dynamoDB = new AWS.DynamoDB()
   dynamoDBClient = new AWS.DynamoDB.DocumentClient()
   if (!isProd || shouldInitDB) {
