@@ -22,11 +22,17 @@ A Home automation sever running on [Raspberry Pi 3B](https://www.raspberrypi.org
 ## Documentation
   ### Installation/dev
   - installation: `npm i`
-  - dev: `npm run dev`
+  - start dev db: use [dynamodb-local](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DynamoDBLocal.DownloadingAndRunning.html)
+    - [docker](https://www.docker.com/) installed locally
+    - cd to `./db` and run `docker-compose up -d`. It will download the docker image if not exists and start the container in the background
+  - start server and UI dev: `npm run dev`
+    - dev UI: http://localhost:3000
+    - default login: admin/password (inilized in db setup)
+  ### Production
   - start server: `npm run start`
-  - create service so can boot with OS https://stackoverflow.com/a/29042953
-  - dev UI: http://localhost:3000
-
+  - DB: AWS DynamoDB (us-east-1)
+  - create service so can boot with OS https://stackoverflow.com/a/29042953 (Will change once containerized)
+    - sample service file under `.utils/homeAutomation.service` 
   ### USB port power
   - preqeq: Install and setup (permission) uhubctl https://github.com/mvp/uhubctl
   - symlink the uhubctl to `/usr/local/bin` so the child_process can access

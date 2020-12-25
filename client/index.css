@@ -5,3 +5,7 @@
 .flex > * {
   margin-right: 1rem;
 }
+
+.logout {
+  margin: 1rem 0;
+}

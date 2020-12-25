@@ -7,8 +7,10 @@ import https from 'https'
 import http from 'http'
 import path from 'path'
 import { Server } from 'socket.io'
+import cookieParser from 'cookie-parser'
 import mainRoute from './routes/mainRoute.js'
 import { setupSharedIO } from './utils/socketIO.js'
+import { setupDynamoDB } from './db/config/index.js'
 
 const app = express()
 const host = '0.0.0.0'
@@ -17,7 +19,10 @@ const port = isProd ? 80 : 3000
 const httpsPort = isProd ? 443 : 3001
 const appName = 'Home automation'
 
+setupDynamoDB()
+
 app.use(helmet())
+app.use(cookieParser())
 app.set('title', appName)
 app.use('/', mainRoute)
 

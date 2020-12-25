@@ -11,6 +11,8 @@ Group=pi
 Environment=PATH=/usr/bin:/usr/local/bin
 Environment=NODE_ENV=production
 Environment=WIN_TARGET_MAC=B0:25:AA:2B:ED:43 
+Environment=ASK_API_TOKEN=GetThisTokenByCallingSignInAPI
+Environment=TOKEN_SECRET=AnotherSecret
 WorkingDirectory=/home/pi/node_server/HomeAutomation
 
 [Install]

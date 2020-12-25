@@ -5,6 +5,7 @@
 
   const turnOnButton = document.querySelector('#decor_on')
   const turnOffButton = document.querySelector('#decor_off')
+
   const getStatus = () => {
     fetch(`${apiPrefix}/status`)
       .then((response) => {

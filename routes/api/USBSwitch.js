@@ -1,11 +1,8 @@
 import express from 'express'
 import usbSwitch, { getPowerFlag } from '../../utils/usbSwitch.js'
-import { adapter as usbSwitchSkillAdaptor } from '../../alexa/skills/usbSwitch/usbSwitchSkill.js'
 import { getSharedIO } from '../../utils/socketIO.js'
 
 const USBSwitchRouter = express.Router()
-
-USBSwitchRouter.post('/alexa', usbSwitchSkillAdaptor.getRequestHandlers())
 
 USBSwitchRouter.get('/:value', (req, resp, next) => {
   next()

@@ -1,8 +1,8 @@
 import Alexa from 'ask-sdk-core'
 import { ExpressAdapter } from 'ask-sdk-express-adapter'
 import axios from 'axios'
-import { getSharedIO } from '../../../utils/socketIO.js'
-import { usbSwitchPromise } from '../../../utils/usbSwitch.js'
+
+const API_TOKEN = process.env.ASK_API_TOKEN
 
 const LaunchRequestHandler = {
   canHandle (handlerInput) {
@@ -26,14 +26,10 @@ const ToggleDecorLightIntentHandler = {
   },
   async handle (handlerInput) {
     const targetValue = handlerInput.requestEnvelope.request.intent.slots.shouldOpen.value
-    const { stdout } = await usbSwitchPromise(targetValue)
+    const { ok } = await switchDecorLight(targetValue)
     let speechText
-    if (stdout) {
+    if (ok) {
       speechText = `The decor light turned ${targetValue}`
-      const io = getSharedIO()
-      if (io) {
-        io.emit('component/usbSwitch', stdout)
-      }
     } else {
       throw Alexa.createAskSdkError('Switch', `There is an error occurred while turinging ${targetValue} the decor light`)
     }
@@ -44,8 +40,28 @@ const ToggleDecorLightIntentHandler = {
   }
 }
 
+const switchDecorLight = (targetValue) => {
+  return axios.get(`https://homeautomationbox.com/api/v1/usbSwitch/${targetValue}`, {
+    headers: {
+      Authorization: `Bearer ${API_TOKEN}`
+    }
+  })
+    .then((response) => ({
+      ok: true,
+      message: response.data
+    }))
+    .catch((err) => ({
+      ok: false,
+      message: err.message
+    }))
+}
+
 const turnOnLaptop = () => {
-  return axios.post('https://homeautomationbox.com/api/v1/windowsSwitch/toggle')
+  return axios.post('https://homeautomationbox.com/api/v1/windowsSwitch/toggle', {
+    headers: {
+      Authorization: `Bearer ${API_TOKEN}`
+    }
+  })
     .then((response) => response.data.message)
     .catch((error) => error.response.data.errorMessage)
 }
