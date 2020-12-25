@@ -57,7 +57,7 @@ const switchDecorLight = (targetValue) => {
 }
 
 const turnOnLaptop = () => {
-  return axios.post('https://homeautomationbox.com/api/v1/windowsSwitch/toggle', {
+  return axios.post('https://homeautomationbox.com/api/v1/windowsSwitch/toggle', null, {
     headers: {
       Authorization: `Bearer ${API_TOKEN}`
     }
