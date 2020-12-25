@@ -33,6 +33,22 @@ A Home automation sever running on [Raspberry Pi 3B](https://www.raspberrypi.org
   - DB: AWS DynamoDB (us-east-1)
   - create service so can boot with OS https://stackoverflow.com/a/29042953 (Will change once containerized)
     - sample service file under `.utils/homeAutomation.service`. Please read thru it for it has token/secret needs to be generated
+  - to use aws dynamo db, have the credentials under `~/.aws/credentials`.
+    - to generate users table in the initial load run production with env var: `INIT_DB=true`
+  ### Auth
+  - Technology:
+    - Using [bcrypt](https://en.wikipedia.org/wiki/Bcrypt) for hashing/verification. So no actual password is saved
+    - Using [JWT](https://jwt.io/) for validating logged-in user
+  - REST:
+    - body:
+      ```
+        {
+          "username": "username",
+          "password": "password
+        }
+      ```
+    - login: POST `{hostname}/auth/login`
+    - signup: POST `{hostname}/auth/signup` (TBD) need to improve
   ### USB port power
   - preqeq: Install and setup (permission) uhubctl https://github.com/mvp/uhubctl
   - symlink the uhubctl to `/usr/local/bin` so the child_process can access
