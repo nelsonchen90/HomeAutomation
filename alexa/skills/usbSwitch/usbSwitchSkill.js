@@ -2,6 +2,8 @@ import Alexa from 'ask-sdk-core'
 import { ExpressAdapter } from 'ask-sdk-express-adapter'
 import axios from 'axios'
 
+const API_TOKEN = process.env.ASK_API_TOKEN
+
 const LaunchRequestHandler = {
   canHandle (handlerInput) {
     return handlerInput.requestEnvelope.request.type === 'LaunchRequest'
@@ -39,7 +41,11 @@ const ToggleDecorLightIntentHandler = {
 }
 
 const switchDecorLight = (targetValue) => {
-  return axios.get(`https://homeautomationbox.com/api/v1/usbSwitch/${targetValue}`)
+  return axios.get(`https://homeautomationbox.com/api/v1/usbSwitch/${targetValue}`, {
+    headers: {
+      Authorization: `Bearer ${API_TOKEN}`
+    }
+  })
     .then((response) => ({
       ok: true,
       message: response.data
@@ -51,7 +57,11 @@ const switchDecorLight = (targetValue) => {
 }
 
 const turnOnLaptop = () => {
-  return axios.post('https://homeautomationbox.com/api/v1/windowsSwitch/toggle')
+  return axios.post('https://homeautomationbox.com/api/v1/windowsSwitch/toggle', {
+    headers: {
+      Authorization: `Bearer ${API_TOKEN}`
+    }
+  })
     .then((response) => response.data.message)
     .catch((error) => error.response.data.errorMessage)
 }
