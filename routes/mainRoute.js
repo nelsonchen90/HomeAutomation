@@ -25,7 +25,7 @@ const authMiddlware = jwtMid({
   credentialsRequired: false,
   getToken: (req) => {
     const tokenString = (req.headers && req.headers.authorization) ||
-      (req.cookies && req.cookies.access_token)
+      (req.cookies && req.cookies.access_token) || (req.query && req.query.access_token)
     if (tokenString && tokenString.split(' ')[0] === 'Bearer') {
       return tokenString.split(' ')[1]
     }
