@@ -1,5 +1,10 @@
+.page_title {
+    text-align: center;
+}
+
 .flex {
     display: flex;
+    justify-content: center;
 }
 
 .flex > * {
@@ -8,6 +13,8 @@
 
 .logout {
     margin: 1rem 0;
+    display: flex;
+    justify-content: center;
 }
 
 .lds-ellipsis {
@@ -80,6 +87,9 @@
 .credit {
     color: silver;
     font-size: 14px;
+    position: fixed;
+    bottom: 0.5rem;
+    right: 1rem;
 }
 
 .credit > a {
