@@ -4,14 +4,23 @@ button.hidden {
 
 button {
     border: none;
-    background-color: grey;
+    /* background-color: grey; */
     color: white;
-    font-size: 2rem;
+    height: 6rem;
+    width: 6rem;
     padding: 1rem;
     border-radius: 1.5rem;
     cursor: pointer;
+    background-image: url('./icons/light-off-64.png');
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 button.on {
-    background-color: limegreen;
+    background-color: lightskyblue;
+    background-image: url('./icons/light-on-64.png');
+}
+
+button.hidden {
+    display: none;
 }

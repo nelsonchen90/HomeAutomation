@@ -5,6 +5,7 @@
 
   const turnOnButton = document.querySelector('#decor_on')
   const turnOffButton = document.querySelector('#decor_off')
+  const loadingAnimation = document.querySelector('#decor_loading')
 
   const getStatus = () => {
     fetch(`${apiPrefix}/status`)
@@ -45,17 +46,17 @@
     turnOffButton.className = value === 'off' ? 'hidden' : 'on'
   }
   const toggleElements = (value) => {
-    turnOnButton.setAttribute('disabled', 'true')
-    turnOffButton.setAttribute('disabled', 'true')
+    turnOnButton.classList.add('hidden')
+    turnOffButton.classList.add('hidden')
+    loadingAnimation.classList.remove('hidden')
     toggleDecorLight(value)
       .then(() => {
         toggleSwitchDisplay(value)
-        turnOnButton.removeAttribute('disabled')
-        turnOffButton.removeAttribute('disabled')
+        loadingAnimation.classList.add('hidden')
       })
       .catch(() => {
-        turnOnButton.setAttribute('disabled', 'true')
-        turnOffButton.setAttribute('disabled', 'true')
+        toggleSwitchDisplay(value === 'on' ? 'off' : 'on')
+        loadingAnimation.classList.add('hidden')
       })
   }
 

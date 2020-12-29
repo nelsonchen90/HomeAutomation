@@ -1,3 +1,10 @@
 .trigger {
-  background: cadetblue;
+  background-color: aliceblue;
+  background-image: url('./icons/windows-client-64.png');
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.trigger.hidden {
+  display: none;
 }

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
-  <head>
+
+<head>
     <title>Casa de Nelson</title>
     <link rel="stylesheet" href="./index.css">
     <link rel="stylesheet" href="./laptop.css">
@@ -8,29 +9,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="manifest" href="./favicon/site.webmanifest">
     <link rel="apple-touch-icon" href="./favicon/apple-touch-icon.png">
-    <link rel="icon" 
-      type="image/png" 
-      href="./favicon/favicon.ico">
-  </head>
+    <link rel="icon" type="image/png" href="./favicon/favicon.ico">
+</head>
 
-  <body>
+<body>
     <h1>Casa de Nelson</h1>
     <div class="section flex">
-      <div>
-        <h3>Decor light</h3>
-        <button id="decor_on" class="hidden">turn on</button>
-        <button id="decor_off" class="hidden">turn off</button>
-      </div>
-      <div>
-        <h3>Laptop</h3>
-        <button id="laptop_trigger" class="trigger">turn on</button>
-      </div>
+        <div>
+            <button id="decor_on" class="hidden"></button>
+            <button id="decor_off" class="hidden"></button>
+            <div id="decor_loading" class="lds-ellipsis hidden">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+        </div>
+        <div>
+            <button id="laptop_trigger" class="trigger"></button>
+            <div id="laptop_loading" class="lds-ellipsis hidden">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+        </div>
     </div>
     <div class="logout">
-      <a href="/logout">Logout</a>
+        <a href="/logout">Logout</a>
     </div>
+    <div class="credit">Icons by <a target="_blank" href="https://icons8.com">Icons8</a></div>
     <script src="/socket.io/socket.io.js"></script>
     <script src="./decor.js"></script>
     <script src="./laptop.js"></script>
-  </body>
+</body>
+
 </html>
