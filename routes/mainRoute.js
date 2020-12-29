@@ -1,6 +1,7 @@
 import express from 'express'
 import path from 'path'
 import jwtMid from 'express-jwt'
+import jwt from 'jsonwebtoken'
 import apiRouter from './api/apiMainRoute.js'
 import { authRouter } from './api/userOperations.js'
 import { adapter as usbSwitchSkillAdaptor } from '../alexa/skills/usbSwitch/usbSwitchSkill.js'
@@ -51,6 +52,8 @@ mainRouter.use('/home', (err, req, res, next) => {
 })
 mainRouter.use('/home', (req, res, next) => {
   if (!(req.user && req.user.username)) return res.redirect('/signin')
+  const token = jwt.sign(req.user, process.env.TOKEN_SECRET)
+  res.cookie('access_token', `Bearer ${token}`, { maxAge: 14 * 24 * 60 * 60 * 1000, httpOnly: true })
   return next()
 })
 const dir = path.join(path.resolve(), 'client')

@@ -61,7 +61,7 @@ authRouter.post('/login', async (req, res) => {
     console.log(e)
   } finally {
     if (statusCode === 200) {
-      res.cookie('access_token', `Bearer ${token}`)
+      res.cookie('access_token', `Bearer ${token}`, { maxAge: 14 * 24 * 60 * 60 * 1000, httpOnly: true })
     }
     res.status(statusCode).json(response)
   }
