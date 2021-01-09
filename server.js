@@ -11,7 +11,7 @@ import cookieParser from 'cookie-parser'
 import mainRoute from './routes/mainRoute.js'
 import { setupSharedIO } from './utils/socketIO.js'
 import { setupDynamoDB } from './db/config/index.js'
-import setupCheckInterval from './utils/updatePublicIP'
+import setupCheckInterval from './utils/updatePublicIP.js'
 
 const app = express()
 const host = '0.0.0.0'
