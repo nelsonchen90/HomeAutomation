@@ -11,6 +11,7 @@ import cookieParser from 'cookie-parser'
 import mainRoute from './routes/mainRoute.js'
 import { setupSharedIO } from './utils/socketIO.js'
 import { setupDynamoDB } from './db/config/index.js'
+import setupCheckInterval from './utils/updatePublicIP'
 
 const app = express()
 const host = '0.0.0.0'
@@ -38,6 +39,7 @@ if (isProd) {
     console.log('pid is ' + process.pid)
   })
   io = new Server(securedServer)
+  setupCheckInterval(6 * 3600 * 1000)
 }
 
 const exposedServer = http.createServer(app)
